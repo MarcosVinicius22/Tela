@@ -1,0 +1,217 @@
+package projeto.cadastro.aluno.dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
+import projeto.cadastro.aluno.model.leitor.Leitor;
+import projeto.cadastro.aluno.util.ConnectionFactory;
+
+public class LeitorDAO {
+
+	private Leitor leitor;
+	private Connection conn; // conecta com o banco de dados
+	private PreparedStatement ps; // permite executar querys
+	private ResultSet rs; // tabela
+
+	public LeitorDAO() throws Exception {
+		try {
+			conn = ConnectionFactory.getConnection();
+
+		} catch (Exception erro) {
+			throw new Exception("Erro " + erro.getMessage());
+		}
+	}
+
+	public void salvar(Leitor leitor) throws Exception {
+		try {
+			String sql = "INSERT INTO tbAluno(RgmAluno, NomeAluno, DatNasAluno, CpfAluno, EmailAluno, EndAluno, MunAluno, UfAluno, CelAuluno, CampusAluno, PeriodoAluno, DiscAluno, SemestreAluno, NotaAluno, FaltasAluno, RgmAluno  )" + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, leitor.getRgm());
+			ps.setString(2, leitor.getNome());
+			ps.setString(3, leitor.getDataDeNascimento());
+			ps.setInt(4, leitor.getCPF());
+			ps.setString(5, leitor.getEmail());
+			ps.setDate(6, leitor.getEndereço());
+			ps.setInt(7, leitor.getMunicípio());
+			ps.setInt(8, leitor.getUF());
+			ps.setInt(9, leitor.getCelular());
+			ps.setInt(10, leitor.getCampus());
+			ps.setString(11, leitor.getPeriodo());
+			ps.setString(12, leitor.getDisciplina());
+			ps.setString(13, leitor.getSemestre));
+			ps.setString(14, leitor.getNota());
+			ps.setInt(15, leitor.getFaltas());
+			
+			
+			ps.executeUpdate();
+		} catch (Exception erro) {
+			throw new Exception("Erro " + erro.getMessage());
+		}
+	}
+
+	public void alterar(Leitor leitor) throws Exception {
+		try {
+			String sql = "UPDATE tbAluno SET RgmAluno=?, NomeAluno=?, DatNasAluno=?, CpfAluno=?, EmailAluno=?, EndAluno=?, MunAluno=?, UfAluno=?, CelAuluno=?, CampusAluno=?, PeriodoAluno=?, DiscAluno=?, SemestreAluno=?, NotaAluno=?, FaltasAluno=?, RgmAluno=? " + "WHERE RgmAluno=?";
+			ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, leitor.getRgm());
+			ps.setString(2, leitor.getNome());
+			ps.setString(3, leitor.getDataDeNascimento());
+			ps.setInt(4, leitor.getCPF());
+			ps.setString(5, leitor.getEmail());
+			ps.setDate(6, leitor.getEndereço());
+			ps.setInt(7, leitor.getMunicípio());
+			ps.setInt(8, leitor.getUF());
+			ps.setInt(9, leitor.getCelular());
+			ps.setInt(10, leitor.getCampus());
+			ps.setString(11, leitor.getPeriodo());
+			ps.setString(12, leitor.getDisciplina());
+			ps.setString(13, leitor.getSemestre));
+			ps.setString(14, leitor.getNota());
+			ps.setInt(15, leitor.getFaltas());
+			
+			ps.executeUpdate();
+		} catch (Exception erro) {
+			throw new Exception("Erro " + erro.getMessage());
+		}
+	}
+
+	public void excluir(int codLeitor) throws Exception {
+		try {
+			String sql = "DELETE FROM tbAluno " + "WHERE RgmAluno=?";
+			ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, leitor.getRgm());
+			ps.setString(2, leitor.getNome());
+			ps.setString(3, leitor.getDataDeNascimento());
+			ps.setInt(4, leitor.getCPF());
+			ps.setString(5, leitor.getEmail());
+			ps.setDate(6, leitor.getEndereço());
+			ps.setInt(7, leitor.getMunicípio());
+			ps.setInt(8, leitor.getUF());
+			ps.setInt(9, leitor.getCelular());
+			ps.setInt(10, leitor.getCampus());
+			ps.setString(11, leitor.getPeriodo());
+			ps.setString(12, leitor.getDisciplina());
+			ps.setString(13, leitor.getSemestre));
+			ps.setString(14, leitor.getNota());
+			ps.setInt(15, leitor.getFaltas());
+			
+			ps.executeUpdate();
+		} catch (Exception erro) {
+			throw new Exception("Erro " + erro.getMessage());
+		}
+
+	}
+
+	public List<Leitor> listarTodos() throws Exception {
+
+		try {
+
+			List<Leitor> leitores = new ArrayList<Leitor>();
+
+			String sql = "SELECT * FROM tbAluno";
+
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+
+				leitor = new Leitor();
+				
+				leitor.setRgm(rs.getInt(1));
+				leitor.setNome(rs.getString(2));
+				leitor.setDataDeNascimento(rs.getInt(3));
+				leitor.setCPF(rs.getInt(4));
+				leitor.setEmail(rs.getString(5));
+				leitor.setEndereço(rs.getString(6));
+				leitor.setMunicípio(rs.getString(7));
+				leitor.setUF(rs.getString(8));
+				leitor.setCelular(rs.getInt(9));
+				leitor.setCampus(rs.getString(10));
+				leitor.setPeriodo(rs.getString(11));
+				leitor.setDisciplina(rs.getString(12));
+				leitor.setSemestre(rs.getInt(13));
+				leitor.setNota(rs.getFloat(14));
+				leitor.setFaltas(rs.getInt(15));
+				
+				
+				
+				
+
+				leitores.add(leitor);
+			}
+
+			return leitores;
+
+		} catch (Exception e) {
+			throw new Exception("Erro: " + e.getMessage());
+		}
+
+	}
+
+	public Leitor consultar(int RgmAluno) throws Exception {
+
+		try {
+
+			leitor = new Leitor();
+
+			String sql = "SELECT * FROM tbAluno WHERE RgmAluno=?";
+
+			ps = conn.prepareStatement(sql);
+			
+			ps.setInt(1, leitor.getRgm());
+			ps.setString(2, leitor.getNome());
+			ps.setString(3, leitor.getDataDeNascimento));
+			ps.setInt(4, leitor.getCPF());
+			ps.setString(5, leitor.getEmail());
+			ps.setString(6, leitor.getEndereço());
+			ps.setInt(7, leitor.getMunicípio());
+			ps.setInt(8, leitor.getUF());
+			ps.setInt(9, leitor.getCelular());
+			ps.setInt(10, leitor.getCampus());
+			ps.setString(11, leitor.getPeriodo());
+			ps.setString(12, leitor.getDisciplina());
+			ps.setString(13, leitor.getSemestre());
+			ps.setString(14, leitor.getNota());
+			ps.setInt(15, leitor.getFalta());
+			
+			
+			rs = ps.executeQuery();
+
+			while (rs.next()) {
+				
+			}
+			leitor = new Leitor();
+
+				leitor.setRgm(rs.getInt(1));
+				leitor.setNome(rs.getString(2));
+				leitor.setDataDeNascimento(rs.getInt(3));
+				leitor.setCPF(rs.getInt(4));
+				leitor.setEmail(rs.getString(5));
+				leitor.setEndereço(rs.getString(6));
+				leitor.setMunicípio(rs.getString(7));
+				leitor.setUF(rs.getString(8));
+				leitor.setCelular(rs.getInt(9));
+				leitor.setCampus(rs.getString(10));
+				leitor.setPeriodo(rs.getString(11));
+				leitor.setDisciplina(rs.getString(12));
+				leitor.setSemestre(rs.getInt(13));
+				leitor.setNota(rs.getFloat(14));
+				leitor.setFaltas(rs.getInt(15));
+				
+				
+
+			return leitor;
+
+		} catch (Exception e) {
+			throw new Exception("Erro: " + e.getMessage());
+		}
+
+	}
+
+}
